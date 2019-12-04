@@ -59,6 +59,10 @@ func dataSourceFastlyIPRangesRead(d *schema.ResourceData, meta interface{}) erro
 		return fmt.Errorf("Error parsing result: %s", err)
 	}
 
+	if len(result.Addresses) == 0 {
+		return fmt.Errorf("Error: no addresses returned")
+	}
+
 	sort.Strings(result.Addresses)
 
 	if err := d.Set("cidr_blocks", result.Addresses); err != nil {
